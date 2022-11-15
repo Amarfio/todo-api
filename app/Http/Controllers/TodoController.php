@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -66,16 +67,26 @@ class TodoController extends Controller
     */
     //method to create new todo record
     public function store(Request $request){
-        $todo = $this->todo->createTodo($request->all());
-        if($todo==1){
-            return response()->json(["responseCode"=>"000","message"=>"todo record added successfully", "data"=>$todo]);
+
+        $result = null;
+        try{
+            $todo = $this->todo->createTodo($request->all());
+            if($todo==1){
+                $result = ["responseCode"=>200,"message"=>"todo record added successfully", "data"=>$todo];
+            }
+            else if($todo == 2){
+                $result = ["responseCode"=>"99","message"=>"title is required", "data"=>$todo];
+            }
+            else if($todo ==3){
+                $result = ["responseCode"=>"99","message"=>"content is required", "data"=>$todo];
+            }
+
+            return response()->json($result);
+        }catch(Exception $exception){
+            $result = ["responseCode"=> 400, "message"=> $exception->getMessage(), "data" => null];
+            return response()->json($result);
         }
-        else if($todo == 2){
-            return response()->json(["responseCode"=>"99","message"=>"title is required", "data"=>$todo]);
-        }
-        else if($todo ==3){
-            return response()->json(["responseCode"=>"99","message"=>"content is required", "data"=>$todo]);
-        }
+        
     }
 
     // /**
@@ -134,13 +145,15 @@ class TodoController extends Controller
     //method to update todo record by id
     public function update($id, Request $request){
 
+        $result = null;
         try {
             $todo = $this->todo->updateTodo($id, $request->all());
-            return response()->json($todo);
+            $result = ["responseCode" => 200, "msg"=>"data found", "data"=>$todo];
+            return response()->json($result);
         }
         catch (ModelNotFoundException $exception){
-
-            return response()->json(["msg"=>$exception->getMessage(), "status" => 404]);
+            $result = ["msg"=>$exception->getMessage(), "responseCode" => 404, "data"=>null];
+            return response()->json($result);
         }
     }
 
@@ -174,15 +187,34 @@ class TodoController extends Controller
      * )
      */
     //method to get to do details by id
-    public function get($id){
-        $todo = $this->todo->getTodo($id);
-        // return $todo;
+    public function get(Request $request ){
 
-        if($todo){
-            return response()->json($todo);
+        //declare the and assign the result as an empty array
+        $result = null;
+        
+        //catch any error that comes up from this code
+        try{    
+            $todo = $this->todo->getTodoWithId($request->id);
+            // return $todo->;
+            // if($todo == null){
+
+            //     //assign the empty array content to this
+            //     $result = array("responseCode"=> 400, "message"=> "no data found", "data"=> null);
+            // }
+            // 
+            $result = array("responseCode"=>200, "message"=> "data found", "data" => $todo);
+
+            //return the result of the array
+            return response()->json($result);
+
+        }catch (ModelNotFoundException $exception){
+
+            //put the catched error into the result array
+            $result = array("responseCode"=> 404, "message"=> $exception->getMessage(), "data"=> null);
+
+            //return the result of the array
+            return response()->json($result);
         }
-
-        return response()->json(["msg"=>"Todo item not found", "status" => 404]);
     }
 
     /**
@@ -233,7 +265,23 @@ class TodoController extends Controller
     //method to get all to dos
     public function gets(){
         $todos = $this->todo->getsTodo();
-        return response()->json($todos);
+
+        //throw error if it comes up
+        try{
+            if(count($todos)> 0){
+                $result = array('responseCode'=>200, 'message'=> "data found", 'data'=>$todos);
+            }
+            else{
+                $result = array('responseCode'=>201, 'message'=> "no data found",'data'=>null);
+            }
+
+            // return response()->setStatusCode(300)->setContent($result);
+
+            return response()->json($result);
+        }catch(Exception $exception){
+            //display the error that was thrown
+            $result = array('responseCode'=> 400, 'message'=>$exception->getMessage(), 'data'=> null);
+        }
     }
 
     // /**
@@ -268,7 +316,7 @@ class TodoController extends Controller
             $todo = $this->todo->deleteTodo($id);
             return response()->json(["msg"=>"delete todo successful", "result"=>$todo]);
         }catch(ModelNotFoundException $exception){
-            return response()->json(["msg"=>$exception->getMessage(), "status"=> 404]);
+            return response()->json(["responseCode"=> 404, "message"=>$exception->getMessage(), "data"=>null ]);
         }
 
     }

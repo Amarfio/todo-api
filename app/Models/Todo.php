@@ -88,4 +88,18 @@ class Todo extends Model
 
         return $todo->delete();
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getTodoWithId($id){
+        $todo = $this->getTodo($id);
+
+        if($todo == null){
+            throw new ModelNotFoundException("Todo item not found");
+        }
+
+        return $todo->delete();
+    }
 }

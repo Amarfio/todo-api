@@ -18,8 +18,8 @@ class CreateTodoTable extends Migration
             $table->timestamps();
             // $table->string(column: "title", length: 15);
             // $table->string(column: "content", length: 150);
-            $table->string('title', 15);
-            $table->string('content', 150);
+            $table->string('title', 100);
+            $table->longText('content');
         });
     }
 
