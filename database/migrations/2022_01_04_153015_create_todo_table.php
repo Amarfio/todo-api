@@ -14,12 +14,13 @@ class CreateTodoTable extends Migration
     public function up()
     {
         Schema::create('todo', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            // $table->string(column: "title", length: 15);
-            // $table->string(column: "content", length: 150);
-            $table->string('title', 100);
-            $table->longText('content');
+            $table->id(); //this is a unique id for the tasks in the table
+            $table->string('title', 100)->unique();// this is a title description of the task.
+            $table->longText('description'); //this gives information about the task.
+            $table->char('status', 10);//this indicate whether the task has been not started(nts), in progress(wip) and completed(com).
+            $table->dateTime('startdateTime');//this indicates the date and time the task will start.
+            $table->dateTime('enddateTime');//this indicates the date and time the task will end.
+            $table->timestamps();//for audit which contains updated_at and created_at..
         });
     }
 

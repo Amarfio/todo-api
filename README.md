@@ -1,5 +1,5 @@
 # TODO API V 1.0:
-This is an api(application programming interface) to manipulate the details of todo records in a database. It made up of endpoints to create, read, update and delete details in the database. The database name is todo_api. The list below are the api endpoints with their coresponding screenshots. The api documentation was done with the swagger ui which is an interface for representing api endpoints. 
+This is an api(application programming interface) to manipulate the details of todo records in a database. It is made up of endpoints to create, read, update and delete details in the database. The database name is todo-db. The list below are the api endpoints with their coresponding screenshots. The api documentation was done with the swagger ui which is an interface for representing api endpoints. 
 Follow the steps below to access the landing page of the api.
 1. Create the todo_api in the database of phpmyamdin
 2. Run php artisan migrate in the cmd of the folder's directory

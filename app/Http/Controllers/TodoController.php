@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Codesc;
 use App\Models\Todo;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+use function PHPUnit\Framework\isEmpty;
 
 class TodoController extends Controller
 {
@@ -70,23 +72,43 @@ class TodoController extends Controller
 
         $result = null;
         try{
-            $todo = $this->todo->createTodo($request->all());
-            if($todo==1){
-                $result = ["responseCode"=>200,"message"=>"todo record added successfully", "data"=>$todo];
-            }
-            else if($todo == 2){
-                $result = ["responseCode"=>"99","message"=>"title is required", "data"=>$todo];
-            }
-            else if($todo ==3){
-                $result = ["responseCode"=>"99","message"=>"content is required", "data"=>$todo];
-            }
+            $todo = null;
 
+            if($request->title==""){
+                $result=["responseCode"=>417, "message"=>"title can't be emtpy", "data"=> null];
+            }else if($request->description==""){
+                $result = ["responseCode" => 417, "message" => "description can't be empty", "data" => null];
+            }else if ($request->startdateTime=="" || $request->enddateTime==""){
+                $result = ["responseCode" => 417, "message" => "start datetime and end datetime cannot be empty", "data"=>null];
+            }
+            else{
+
+                $countTodo = Todo::where('title',$request->title)->count();
+
+                //get the status a default value of not started
+                $defaultStatus=Codesc::where('code', 'nts')->value('code');
+
+                if($countTodo>0){
+                    $result = ["responseCode"=>417,"message"=>"title already exists", "data"=>null];
+                }
+                else{
+                    $todo = Todo::create([
+                        'title' => $request->title,
+                        'description' => $request->description,
+                        'status' => $defaultStatus,
+                        'startdateTime' => $request->startdateTime,
+                        'enddateTime' => $request->enddateTime,
+
+                    ]);
+                    $result = ["responseCode" => 200, "message" => "success", "data" => $todo];
+                }
+            }
             return response()->json($result);
         }catch(Exception $exception){
-            $result = ["responseCode"=> 400, "message"=> $exception->getMessage(), "data" => null];
+            $result = ["responseCode"=> 417, "message"=> "failed", "data" => $exception->getMessage()];
             return response()->json($result);
         }
-        
+
     }
 
     // /**
@@ -143,16 +165,66 @@ class TodoController extends Controller
      */
 
     //method to update todo record by id
-    public function update($id, Request $request){
+    public function update(Request $request){
+
+        //for response base
+        $result = null;
+        try {
+            $todo = null;
+            $countTodo = Todo::where('id', $request->id)->count();
+            if($countTodo>0){
+                $saveTodo = Todo::where('id', $request->id)->update([
+                        'title' => $request->title,
+                        'description' => $request->description,
+                        'startdateTime' => $request->startdateTime,
+                        'enddateTime' => $request->enddateTime
+                    ]);
+                // return $saveTodo;
+                if($saveTodo == 1){
+                    $todo = Todo::where('id', $request->id)->get();
+                    $result = ["responseCode"=>200, "message"=> "success", "data"=>$todo];
+                }else{
+                    $result = ["responseCode"=>417, "message"=>"failed to update todo details", "data"=>null];
+                }
+            }else{
+                $result = ["responseCode"=>417, "message"=> "failed", "data"=>null];
+            }
+            // $result = ["responseCode" => 200, "msg"=>"success", "data"=>$todo];
+            return response()->json($result);
+        }
+        catch (Exception $exception){
+            $result = ["responseCode" => 417, "msg"=>$exception->getMessage(), "data"=>null];
+            return response()->json($result);
+        }
+    }
+
+    //method to update todo status record by id
+    public function updateTodoStatus(Request $request){
 
         $result = null;
         try {
-            $todo = $this->todo->updateTodo($id, $request->all());
-            $result = ["responseCode" => 200, "msg"=>"data found", "data"=>$todo];
+            // $todo = $this->todo->updateTodoStatus($id, $request->status);
+            $countTodo = Todo::where('id', $request->id)->count();
+            $todo = null;
+            if ($countTodo > 0) {
+                $savetodo = Todo::where('id', $request->id)->update([
+                    'status' => $request->status
+                ]);
+                if($savetodo == 1){
+                    $todo = Todo::where('id', $request->id)->get();
+                    $result = ["responseCode" => 200, "message" => "success", "data" => $todo];
+                }
+                else{
+                    $result = ["responseCode" => 417, "message" => "failed to updated todo status", "data" => null];
+                }
+            }else{
+                $result = ["responseCode" => 417, "message" => "todo details not found", "data" => null];
+            }
+            // $result = ["responseCode" => 200, "msg"=>"success", "data"=>$todo];
             return response()->json($result);
         }
-        catch (ModelNotFoundException $exception){
-            $result = ["msg"=>$exception->getMessage(), "responseCode" => 404, "data"=>null];
+        catch (Exception $exception){
+            $result = ["responseCode" => 417, "msg"=>$exception->getMessage(), "data"=>null];
             return response()->json($result);
         }
     }
@@ -191,28 +263,24 @@ class TodoController extends Controller
 
         //declare the and assign the result as an empty array
         $result = null;
-        
+
         //catch any error that comes up from this code
-        try{    
-            $todo = $this->todo->getTodoWithId($request->id);
-            // return $todo->;
-            // if($todo == null){
-
-            //     //assign the empty array content to this
-            //     $result = array("responseCode"=> 400, "message"=> "no data found", "data"=> null);
-            // }
-            // 
-            $result = array("responseCode"=>200, "message"=> "data found", "data" => $todo);
-
-            //return the result of the array
+        $result = null;
+        try {
+            // $todo = $this->todo->updateTodoStatus($id, $request->status);
+            $countTodo = Todo::where('id', $request->id)->count();
+            $todo = null;
+            if ($countTodo > 0) {
+                $todo = Todo::where('id', $request->id)->get();
+                $result = ["responseCode" => 200, "message" => "success", "data" => $todo];
+            }else{
+                $result = ["responseCode" => 417, "message" => "todo details not found", "data" => null];
+            }
+            // $result = ["responseCode" => 200, "msg"=>"success", "data"=>$todo];
             return response()->json($result);
-
-        }catch (ModelNotFoundException $exception){
-
-            //put the catched error into the result array
-            $result = array("responseCode"=> 404, "message"=> $exception->getMessage(), "data"=> null);
-
-            //return the result of the array
+        }
+        catch (Exception $exception){
+            $result = ["responseCode" => 417, "msg"=>$exception->getMessage(), "data"=>null];
             return response()->json($result);
         }
     }
@@ -263,24 +331,22 @@ class TodoController extends Controller
      * )
      */
     //method to get all to dos
-    public function gets(){
-        $todos = $this->todo->getsTodo();
+    public function getAllTodos(){
+        $todos = Todo::all();
+        $countTodos = Todo::all()->count();
 
         //throw error if it comes up
         try{
-            if(count($todos)> 0){
-                $result = array('responseCode'=>200, 'message'=> "data found", 'data'=>$todos);
+            if($countTodos > 0){
+                $result = array('responseCode'=>200, 'message'=> "success", 'data'=>$todos);
             }
             else{
-                $result = array('responseCode'=>201, 'message'=> "no data found",'data'=>null);
+                $result = array('responseCode'=>417, 'message'=> "failed",'data'=>null);
             }
-
-            // return response()->setStatusCode(300)->setContent($result);
-
             return response()->json($result);
         }catch(Exception $exception){
             //display the error that was thrown
-            $result = array('responseCode'=> 400, 'message'=>$exception->getMessage(), 'data'=> null);
+            $result = array('responseCode'=> 417, 'message'=>$exception->getMessage(), 'data'=> null);
         }
     }
 
