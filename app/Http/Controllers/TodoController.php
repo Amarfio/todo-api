@@ -387,35 +387,35 @@ class TodoController extends Controller
     //  * @return \Illuminate\Http\JsonResponse
     //  */
 
-    /**
-     * Delete Todo
-     * @OA\Delete (
-     *     path="/api/todo/delete/{id}",
-     *     tags={"Todo"},
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="msg", type="string", example="delete todo success")
-     *         )
-     *     )
-     * )
-     */
-    //method to delete to do by id
-    public function delete($id){
+    // /**
+    //  * Delete Todo
+    //  * @OA\Delete (
+    //  *     path="/api/todo/delete/{id}",
+    //  *     tags={"Todo"},
+    //  *     @OA\Parameter(
+    //  *         in="path",
+    //  *         name="id",
+    //  *         required=true,
+    //  *         @OA\Schema(type="string")
+    //  *     ),
+    //  *     @OA\Response(
+    //  *         response=200,
+    //  *         description="success",
+    //  *         @OA\JsonContent(
+    //  *             @OA\Property(property="msg", type="string", example="delete todo success")
+    //  *         )
+    //  *     )
+    //  * )
+    //  */
+    // //method to delete to do by id
+    // public function delete($id){
 
-        try{
-            $todo = $this->todo->deleteTodo($id);
-            return response()->json(["msg"=>"delete todo successful", "result"=>$todo]);
-        }catch(ModelNotFoundException $exception){
-            return response()->json(["responseCode"=> 404, "message"=>$exception->getMessage(), "data"=>null ]);
-        }
+    //     try{
+    //         $todo = $this->todo->deleteTodo($id);
+    //         return response()->json(["msg"=>"delete todo successful", "result"=>$todo]);
+    //     }catch(ModelNotFoundException $exception){
+    //         return response()->json(["responseCode"=> 404, "message"=>$exception->getMessage(), "data"=>null ]);
+    //     }
 
-    }
+    // }
 }
