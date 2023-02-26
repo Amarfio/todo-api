@@ -9,13 +9,98 @@
         "version": "1.0.2"
     },
     "paths": {
-        "/api/todo/settings/codetype/add": {
+        "/todo-api/public/api/v1/settings/codetypes": {
+            "get": {
+                "tags": [
+                    "Settings|codetype"
+                ],
+                "summary": "Get all code types",
+                "operationId": "60ca64f430f7faa5e1c7beab4f8b51d4",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "responseCode": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "code": {
+                                                        "type": "string",
+                                                        "example": "nts"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "not started"
+                                                    },
+                                                    "isActive": {
+                                                        "type": "number",
+                                                        "example": 1
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2022-12-20T10:50:13.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2022-12-20T10:50:13.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "417": {
+                        "description": "not as expected",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "responseCode": {
+                                            "type": "number",
+                                            "example": "417"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "error message"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": "stack trace of the error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Settings|codetype"
                 ],
                 "summary": "Add Code Type",
-                "operationId": "ef20fa49599a529b888975c903f26d0b",
+                "operationId": "02840d7e9789c964aabacf5bcb36c401",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -124,100 +209,13 @@
                 }
             }
         },
-        "/api/todo/settings/codetype/get-all": {
-            "get": {
-                "tags": [
-                    "Settings|codetype"
-                ],
-                "summary": "Get all code types",
-                "operationId": "a7abe2035f4de4d1ae60eafb9d967a49",
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "responseCode": {
-                                            "type": "number",
-                                            "example": "200"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "number",
-                                                        "example": "1"
-                                                    },
-                                                    "code": {
-                                                        "type": "string",
-                                                        "example": "nts"
-                                                    },
-                                                    "description": {
-                                                        "type": "string",
-                                                        "example": "not started"
-                                                    },
-                                                    "isActive": {
-                                                        "type": "number",
-                                                        "example": 1
-                                                    },
-                                                    "created_at": {
-                                                        "type": "string",
-                                                        "example": "2022-12-20T10:50:13.000000Z"
-                                                    },
-                                                    "updated_at": {
-                                                        "type": "string",
-                                                        "example": "2022-12-20T10:50:13.000000Z"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "417": {
-                        "description": "not as expected",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "responseCode": {
-                                            "type": "number",
-                                            "example": "417"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "error message"
-                                        },
-                                        "data": {
-                                            "type": "string",
-                                            "example": "stack trace of the error"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/todo/settings/codetype/{id}": {
+        "/todo-api/public/api/v1/settings/codetypes/{id}": {
             "get": {
                 "tags": [
                     "Settings|codetype"
                 ],
                 "summary": "Get code type by id",
-                "operationId": "ca1f088a0a859e4a36139d3b27017437",
+                "operationId": "147b03ed4fa921bf0c8f5d4b08975a58",
                 "parameters": [
                     {
                         "name": "id",
@@ -284,15 +282,13 @@
                         }
                     }
                 }
-            }
-        },
-        "/api/todo/settings/codetype/update/{id}": {
+            },
             "put": {
                 "tags": [
                     "Settings|codetype"
                 ],
                 "summary": "Update code type details by id",
-                "operationId": "a9c196e8162b2554187e86b89f7032b5",
+                "operationId": "686f4f331dbadb68fe76eb4c80c8c3c6",
                 "parameters": [
                     {
                         "name": "id",
@@ -390,13 +386,102 @@
                 }
             }
         },
-        "/api/todo/settings/codesc/add": {
+        "/todo-api/public/api/v1/settings/codescs": {
+            "get": {
+                "tags": [
+                    "Settings|codesc"
+                ],
+                "summary": "Get all codesc stored",
+                "operationId": "b8b99e5a5f16c932619c6770b24bccaa",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "responseCode": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "code_type_id": {
+                                                        "type": "number",
+                                                        "example": 1
+                                                    },
+                                                    "code": {
+                                                        "type": "string",
+                                                        "example": "nts"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "not started"
+                                                    },
+                                                    "isActive": {
+                                                        "type": "number",
+                                                        "example": 1
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2022-12-20T10:50:13.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2022-12-20T10:50:13.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "417": {
+                        "description": "not as expected",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "responseCode": {
+                                            "type": "number",
+                                            "example": "417"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "error message"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": "stack trace of the error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Settings|codesc"
                 ],
                 "summary": "Add Codesc",
-                "operationId": "f1def92222b566850fa2475482519b73",
+                "operationId": "ecd7f3251dc33e863bbc8f803318d14d",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -513,104 +598,13 @@
                 }
             }
         },
-        "/api/todo/settings/codesc/get-all": {
-            "get": {
-                "tags": [
-                    "Settings|codesc"
-                ],
-                "summary": "Get all codesc stored",
-                "operationId": "bb7668e641c65b04c686cd864fc769fe",
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "responseCode": {
-                                            "type": "number",
-                                            "example": "200"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "number",
-                                                        "example": "1"
-                                                    },
-                                                    "code_type_id": {
-                                                        "type": "number",
-                                                        "example": 1
-                                                    },
-                                                    "code": {
-                                                        "type": "string",
-                                                        "example": "nts"
-                                                    },
-                                                    "description": {
-                                                        "type": "string",
-                                                        "example": "not started"
-                                                    },
-                                                    "isActive": {
-                                                        "type": "number",
-                                                        "example": 1
-                                                    },
-                                                    "created_at": {
-                                                        "type": "string",
-                                                        "example": "2022-12-20T10:50:13.000000Z"
-                                                    },
-                                                    "updated_at": {
-                                                        "type": "string",
-                                                        "example": "2022-12-20T10:50:13.000000Z"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "417": {
-                        "description": "not as expected",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "responseCode": {
-                                            "type": "number",
-                                            "example": "417"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "error message"
-                                        },
-                                        "data": {
-                                            "type": "string",
-                                            "example": "stack trace of the error"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/todo/settings/codesc/{id}": {
+        "/todo-api/public/api/v1/settings/codescs/{id}": {
             "get": {
                 "tags": [
                     "Settings|codesc"
                 ],
                 "summary": "Get codesc by id",
-                "operationId": "dde281c4d1a4b7f5adbd0784884efbc5",
+                "operationId": "9c520cafe6182621fba3e36557cf631f",
                 "parameters": [
                     {
                         "name": "id",
@@ -705,15 +699,13 @@
                         }
                     }
                 }
-            }
-        },
-        "/api/todo/settings/codesc/update/{id}": {
+            },
             "put": {
                 "tags": [
                     "Settings|codesc"
                 ],
                 "summary": "Update codesc details by id",
-                "operationId": "1fa937d726c810381bc196800e14faff",
+                "operationId": "185ece1a450b0c20b3521ca8bbd5000e",
                 "parameters": [
                     {
                         "name": "id",
@@ -816,13 +808,13 @@
                 }
             }
         },
-        "/api/todo/settings/codesc/codetype/{codeTypeId}": {
+        "/todo-api/public/api/v1/settings/codescs/codetypes/{codeTypeId}": {
             "get": {
                 "tags": [
                     "Settings|codesc"
                 ],
                 "summary": "Get all codescs by code type id",
-                "operationId": "27b3f9fd49ee2e5bea2a7203c289f708",
+                "operationId": "14c009a3fc8a316d004603a12fbc7aab",
                 "parameters": [
                     {
                         "name": "codeTypeId",
@@ -891,13 +883,78 @@
                 }
             }
         },
-        "/api/todo/add": {
+        "/todo-api/public/api/v1/todos": {
+            "get": {
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Get List Todo",
+                "operationId": "d4f51869aa1d1266c00fa3f5198b0262",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "responseCode": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "title new"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "this is a new title"
+                                                    },
+                                                    "startdateTime": {
+                                                        "type": "string",
+                                                        "example": "2022-12-20T10:50:13.000000Z"
+                                                    },
+                                                    "enddateTime": {
+                                                        "type": "string",
+                                                        "example": "2022-12-20T10:50:13.000000Z"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2022-12-20T10:50:13.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2022-12-20T10:50:13.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Todo"
                 ],
                 "summary": "Create todo",
-                "operationId": "4a360d1ccb1483dbefe5220cff5fbccd",
+                "operationId": "4711f28906db52ac764f3e30b522a021",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -925,10 +982,10 @@
                                 },
                                 "type": "object",
                                 "example": {
-                                    "title": "example title",
-                                    "description": "example description",
-                                    "startdateTime": "2022-12-19T12:06:00.000",
-                                    "enddateTime": "2022-12-19T12:36:30.000"
+                                    "title": "",
+                                    "description": "",
+                                    "startdateTime": "",
+                                    "enddateTime": "0"
                                 }
                             }
                         }
@@ -1022,80 +1079,13 @@
                 }
             }
         },
-        "/api/todo/get-all": {
-            "get": {
-                "tags": [
-                    "Todo"
-                ],
-                "summary": "Get List Todo",
-                "operationId": "f7a338aea1e56b4abba4c653ab3efd6f",
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "responseCode": {
-                                            "type": "number",
-                                            "example": "200"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "number",
-                                                        "example": "1"
-                                                    },
-                                                    "title": {
-                                                        "type": "string",
-                                                        "example": "title new"
-                                                    },
-                                                    "description": {
-                                                        "type": "string",
-                                                        "example": "this is a new title"
-                                                    },
-                                                    "startdateTime": {
-                                                        "type": "string",
-                                                        "example": "2022-12-20T10:50:13.000000Z"
-                                                    },
-                                                    "enddateTime": {
-                                                        "type": "string",
-                                                        "example": "2022-12-20T10:50:13.000000Z"
-                                                    },
-                                                    "created_at": {
-                                                        "type": "string",
-                                                        "example": "2022-12-20T10:50:13.000000Z"
-                                                    },
-                                                    "updated_at": {
-                                                        "type": "string",
-                                                        "example": "2022-12-20T10:50:13.000000Z"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/todo/{id}": {
+        "/todo-api/public/api/v1/todos/{id}": {
             "get": {
                 "tags": [
                     "Todo"
                 ],
                 "summary": "Get Detail Todo",
-                "operationId": "80ac9da1df30119f163916e8aaf45afb",
+                "operationId": "42588b9579a572ea8473ac4252f6a97b",
                 "parameters": [
                     {
                         "name": "id",
@@ -1168,15 +1158,13 @@
                         }
                     }
                 }
-            }
-        },
-        "/api/todo/update/{id}": {
+            },
             "put": {
                 "tags": [
                     "Todo"
                 ],
                 "summary": "Update Todo",
-                "operationId": "8c88a825db408e19ccecf67263a61ec8",
+                "operationId": "7eb4232495ac46f4fc523e2ec1c311fd",
                 "parameters": [
                     {
                         "name": "id",
@@ -1285,13 +1273,13 @@
                 }
             }
         },
-        "/api/todo/delete/{id}": {
-            "delete": {
+        "/todo-api/public/api/v1/todos/status/{id}": {
+            "put": {
                 "tags": [
                     "Todo"
                 ],
-                "summary": "Delete Todo",
-                "operationId": "8affec724d2507c59737cea440352cbe",
+                "summary": "Update Todo",
+                "operationId": "080cb3c9e7809d6b31c1710afd2b9483",
                 "parameters": [
                     {
                         "name": "id",
@@ -1302,6 +1290,40 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "startdateTime": {
+                                                "type": "string"
+                                            },
+                                            "enddateTime": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "title": "example title",
+                                    "description": "example description",
+                                    "startdateTime": "2022-12-19T12:06:00.000",
+                                    "enddateTime": "2022-12-19T12:36:30.000"
+                                }
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "success",
@@ -1309,9 +1331,229 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "msg": {
+                                        "responseCode": {
+                                            "type": "number",
+                                            "example": 200
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "delete todo success"
+                                            "example": "todo details updated"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "example title"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "this is an example title"
+                                                    },
+                                                    "startdateTime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2021-12-11T09:30:53.000000Z"
+                                                    },
+                                                    "enddateTime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2021-12-11T10:30:53.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2021-12-11T09:25:53.000000Z"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2021-12-11T09:25:53.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/todo-api/public/api/v1/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users",
+                "operationId": "1700c4319ed0a7746c8a54637ea15fe0",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "responseCode": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Joshua A"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "joshua@email.com"
+                                                    },
+                                                    "password": {
+                                                        "type": "string",
+                                                        "example": "hasedValue"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2022-12-20T10:50:13.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2022-12-20T10:50:13.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Add new user",
+                "operationId": "5d238ea07fb2740accd4cdc11bd3c756",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "",
+                                    "email": "",
+                                    "password": ""
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "responseCode": {
+                                            "type": "number",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user added successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Joshua A"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "joshua@email.com"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2021-12-11T09:25:53.000000Z"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2021-12-11T09:25:53.000000Z"
+                                                    },
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": 1
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "417": {
+                        "description": "not as expected",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "responseCode": {
+                                            "type": "number",
+                                            "example": "417"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "error message"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": "stack trace string"
                                         }
                                     },
                                     "type": "object"

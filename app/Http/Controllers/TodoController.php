@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Codesc;
+use App\Models\Comment;
 use App\Models\Todo;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class TodoController extends Controller
     /**
      * Create todo
      * @OA\Post(
-     *    path="/api/todo/add",
+     *    path="/todo-api/public/api/v1/todos",
      *    tags={"Todo"},
      *    @OA\RequestBody(
      *      @OA\MediaType(
@@ -50,10 +51,10 @@ class TodoController extends Controller
      *
      *          ),
      *          example={
-     *              "title":"example title",
-     *              "description":"example description",
-     *              "startdateTime":"2022-12-19T12:06:00.000",
-     *              "enddateTime":"2022-12-19T12:36:30.000"
+     *              "title":"",
+     *              "description":"",
+     *              "startdateTime":"",
+     *              "enddateTime":"0"
      *          }
      *        )
      *      )
@@ -135,7 +136,7 @@ class TodoController extends Controller
     /**
      * Get List Todo
      * @OA\Get (
-     *     path="/api/todo/get-all",
+     *     path="/todo-api/public/api/v1/todos",
      *     tags={"Todo"},
      *     @OA\Response(
      *         response=200,
@@ -187,7 +188,7 @@ class TodoController extends Controller
     /**
      * Get Detail Todo
      * @OA\Get (
-     *     path="/api/todo/{id}",
+     *     path="/todo-api/public/api/v1/todos/{id}",
      *     tags={"Todo"},
      *     @OA\Parameter(
      *         in="path",
@@ -252,7 +253,7 @@ class TodoController extends Controller
     /**
      * Update Todo
      * @OA\Put (
-     *     path="/api/todo/update/{id}",
+     *     path="/todo-api/public/api/v1/todos/{id}",
      *     tags={"Todo"},
      *     @OA\Parameter(
      *         in="path",
@@ -349,7 +350,74 @@ class TodoController extends Controller
         }
     }
 
+
+
     //method to update todo status record by id
+    /**
+     * Update Todo
+     * @OA\Put (
+     *     path="/todo-api/public/api/v1/todos/status/{id}",
+     *     tags={"Todo"},
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                      type="object",
+     *                      @OA\Property(
+     *                          property="title",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="description",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="startdateTime",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="enddateTime",
+     *                          type="string"
+     *                      )
+     *                 ),
+     *                 example={
+     *                     "title":"example title",
+     *                     "description":"example description",
+     *                     "startdateTime":"2022-12-19T12:06:00.000",
+     *                     "enddateTime":"2022-12-19T12:36:30.000"
+     *                }
+     *             )
+     *         )
+     *      ),
+     *      @OA\Response(
+     *         response=200,
+     *         description="success",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="responseCode", type="number", example=200),
+     *              @OA\Property(property="message", type="string", example="todo details updated"),
+     *              @OA\Property(property="data", type="array",
+     *              @OA\Items(
+     *              @OA\Property(property="id", type="number", example=1),
+     *              @OA\Property(property="title", type="string", example="example title"),
+     *              @OA\Property(property="description", type="string", example="this is an example title"),
+     *              @OA\Property(property="startdateTime", type="datetime", example="2021-12-11T09:30:53.000000Z"),
+     *              @OA\Property(property="enddateTime", type="datetime", example="2021-12-11T10:30:53.000000Z"),
+     *              @OA\Property(property="updated_at", type="datetime", example="2021-12-11T09:25:53.000000Z"),
+     *              @OA\Property(property="created_at", type="datetime", example="2021-12-11T09:25:53.000000Z")
+     *            )
+     *         )
+     *      )
+     *     )
+     * )
+     */
+
     public function updateTodoStatus(Request $request){
 
         $result = null;
@@ -357,26 +425,56 @@ class TodoController extends Controller
             // $todo = $this->todo->updateTodoStatus($id, $request->status);
             $countTodo = Todo::where('id', $request->id)->count();
             $todo = null;
+            $statusValue = $request->status;
+            $comment = $request->message;
+
+            //this is for the response value
+            $response = null;
+
+            // foreach()
             if ($countTodo > 0) {
-                $savetodo = Todo::where('id', $request->id)->update([
-                    'status' => $request->status
-                ]);
-                if($savetodo == 1){
-                    $todo = Todo::where('id', $request->id)->get();
-                    $result = ["responseCode" => 200, "message" => "success", "data" => $todo];
+
+                //check if the status is in the database
+                $checkStatus = Codesc::where('code_type_id', $statusValue);
+
+                if($checkStatus > 0){
+                    $savetodo = Todo::where('id', $request->id)->update([
+                        'status' => $request->status
+                    ]);
+
+                    //code to create comment
+                    Comment::create([
+                        'todo_id' => $request->id,
+                        'comment' => $comment
+                    ]);
+
+                    if($savetodo == 1){
+                        $todo = Todo::where('id', $request->id)->get();
+                        $result = ["responseCode" => 200, "message" => "success", "data" => $todo];
+                        $response = response($result, 200);
+                    }
+                    else{
+                        $result = ["responseCode" => 417, "message" => "failed to update todo status", "data" => null];
+                        $response = response($result, 417);
+                    }
                 }
                 else{
-                    $result = ["responseCode" => 417, "message" => "failed to updated todo status", "data" => null];
+                    $result = ["responseCode" => 417, "message" => "todo status does not exist"];
+                    $response = response($result, 417);
                 }
+
             }else{
                 $result = ["responseCode" => 417, "message" => "todo details not found", "data" => null];
+                $response = response($result, 417);
             }
             // $result = ["responseCode" => 200, "msg"=>"success", "data"=>$todo];
-            return response()->json($result);
+            // return response()->json($result);
+            return $response;
         }
         catch (Exception $exception){
             $result = ["responseCode" => 417, "msg"=>$exception->getMessage(), "data"=>null];
-            return response()->json($result);
+            // return response()->json($result);
+            $response = response($result, 417);
         }
     }
 
@@ -390,7 +488,7 @@ class TodoController extends Controller
     // /**
     //  * Delete Todo
     //  * @OA\Delete (
-    //  *     path="/api/todo/delete/{id}",
+    //  *     path="/todo-api/public/api/v1/todos/{id}",
     //  *     tags={"Todo"},
     //  *     @OA\Parameter(
     //  *         in="path",

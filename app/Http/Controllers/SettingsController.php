@@ -13,7 +13,7 @@ class SettingsController extends Controller
     /**
      * Add Code Type
      * @OA\Post(
-     *    path="/api/todo/settings/codetype/add",
+     *    path="/todo-api/public/api/v1/settings/codetypes",
      *    tags={"Settings|codetype"},
      *    @OA\RequestBody(
      *      @OA\MediaType(
@@ -93,7 +93,7 @@ class SettingsController extends Controller
     /**
      * Get all code types
      * @OA\Get (
-     *     path="/api/todo/settings/codetype/get-all",
+     *     path="/todo-api/public/api/v1/settings/codetypes",
      *     tags={"Settings|codetype"},
      *     @OA\Response(
      *         response=200,
@@ -150,7 +150,7 @@ class SettingsController extends Controller
     /**
      * Get code type by id
      * @OA\Get (
-     *     path="/api/todo/settings/codetype/{id}",
+     *     path="/todo-api/public/api/v1/settings/codetypes/{id}",
      *     tags={"Settings|codetype"},
      *     @OA\Parameter(
      *         in="path",
@@ -202,7 +202,7 @@ class SettingsController extends Controller
     /**
      * Update code type details by id
      * @OA\Put (
-     *     path="/api/todo/settings/codetype/update/{id}",
+     *     path="/todo-api/public/api/v1/settings/codetypes/{id}",
      *     tags={"Settings|codetype"},
      *     @OA\Parameter(
      *         in="path",
@@ -287,7 +287,7 @@ class SettingsController extends Controller
     /**
      * Add Codesc
      * @OA\Post(
-     *    path="/api/todo/settings/codesc/add",
+     *    path="/todo-api/public/api/v1/settings/codescs",
      *    tags={"Settings|codesc"},
      *    @OA\RequestBody(
      *      @OA\MediaType(
@@ -367,7 +367,7 @@ class SettingsController extends Controller
     /**
      * Get all codesc stored
      * @OA\Get (
-     *     path="/api/todo/settings/codesc/get-all",
+     *     path="/todo-api/public/api/v1/settings/codescs",
      *     tags={"Settings|codesc"},
      *     @OA\Response(
      *         response=200,
@@ -426,7 +426,7 @@ class SettingsController extends Controller
     /**
      * Get codesc by id
      * @OA\Get (
-     *     path="/api/todo/settings/codesc/{id}",
+     *     path="/todo-api/public/api/v1/settings/codescs/{id}",
      *     tags={"Settings|codesc"},
      *     @OA\Parameter(
      *         in="path",
@@ -489,7 +489,7 @@ class SettingsController extends Controller
     /**
      * Update codesc details by id
      * @OA\Put (
-     *     path="/api/todo/settings/codesc/update/{id}",
+     *     path="/todo-api/public/api/v1/settings/codescs/{id}",
      *     tags={"Settings|codesc"},
      *     @OA\Parameter(
      *         in="path",
@@ -579,7 +579,7 @@ class SettingsController extends Controller
     /**
      * Get all codescs by code type id
      * @OA\Get (
-     *     path="/api/todo/settings/codesc/codetype/{codeTypeId}",
+     *     path="/todo-api/public/api/v1/settings/codescs/codetypes/{codeTypeId}",
      *     tags={"Settings|codesc"},
      *     @OA\Parameter(
      *         in="path",

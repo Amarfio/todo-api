@@ -21,32 +21,35 @@ use App\Http\Controllers\UsersController;
 //     return $request->user();
 // });
 
-Route::group(["prefix"=>"todo"],function(){
+Route::group(["prefix"=>"v1"],function(){
 
-    //routes for the main module thus the Todo module
-    Route::post("/add",[TodoController::class, "store"]);
-    Route::get("/get-all",[TodoController::class,"getAllTodos"]);
-    Route::get("/{id}",[TodoController::class,"get"]);
-    Route::put("/update/{id}",[TodoController::class, "update"]);
-    Route::put("/change-status/{id}", [TodoController::class, "updateTodoStatus"]);
+    //-------------------------routes for the main module thus the Todo module-----------------
+    Route::post("todos",[TodoController::class, "store"]);
+    Route::get("todos",[TodoController::class,"getAllTodos"]);
+    Route::get("todos/{id}",[TodoController::class,"get"]);
+    Route::put("todos/{id}",[TodoController::class, "update"]);
+    Route::put("todos/status/{id}", [TodoController::class, "updateTodoStatus"]);
 
     //-------------------------routes for settings endpoints----------------------
 
     //routes for configuring code types
-    Route::post("/settings/codetype/add", [SettingsController::class, "addCodeType"]);
-    Route::get("/settings/codetype/get-all", [SettingsController::class, "getAllCodeTypes"]);
-    Route::get("/settings/codetype/{id}", [SettingsController::class, "getCodeType"]);
-    Route::put("/settings/codetype/update/{id}", [SettingsController::class, "updateCodetype"]);
+    Route::post("/settings/codetypes", [SettingsController::class, "addCodeType"]);
+    Route::get("/settings/codetypes", [SettingsController::class, "getAllCodeTypes"]);
+    Route::get("/settings/codetypes/{id}", [SettingsController::class, "getCodeType"]);
+    Route::put("/settings/codetypes/{id}", [SettingsController::class, "updateCodetype"]);
 
     //routes for configuring codescs
-    Route::post("/settings/codesc/add", [SettingsController::class, "addCodesc"]);
-    Route::get("/settings/codesc/get-all",[SettingsController::class,"getAllCodescs"]);
-    Route::get("/settings/codesc/{id}", [SettingsController::class, "getCodescById"]);
-    Route::put("/settings/codesc/update/{id}", [SettingsController::class, "updateCodesc"]);
-    Route::get("/settings/codesc/codetype/{codeTypeId}", [SettingsController::class, "getCodescByCodeId"]);
+    Route::post("/settings/codescs", [SettingsController::class, "addCodesc"]);
+    Route::get("/settings/codescs",[SettingsController::class,"getAllCodescs"]);
+    Route::get("/settings/codescs/{id}", [SettingsController::class, "getCodescById"]);
+    Route::put("/settings/codescs/{id}", [SettingsController::class, "updateCodesc"]);
+    Route::get("/settings/codescs/codetypes/{codeTypeId}", [SettingsController::class, "getCodescByCodeId"]);
+
+    //---------------------------routes for user endponts -----------------------------
 
     //route for users
-    Route::get("/user/get-all", [UsersController::class, "getAllUsers"]);
+    Route::post("/users", [UsersController::class, "addUser"]);
+    Route::get("/users", [UsersController::class, "getAllUsers"]);
 
 });
 
