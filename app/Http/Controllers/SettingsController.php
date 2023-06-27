@@ -149,6 +149,7 @@ class SettingsController extends Controller
 
     /**
      * Get code type by id
+     *
      * @OA\Get (
      *     path="/todo-api/public/api/v1/settings/codetypes/{id}",
      *     tags={"Settings|codetype"},
@@ -232,6 +233,7 @@ class SettingsController extends Controller
      *                 example={
      *                     "code":"",
      *                     "description":"",
+     *                     "isActive":1
      *
      *                }
      *             )

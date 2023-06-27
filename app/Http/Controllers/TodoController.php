@@ -92,16 +92,20 @@ class TodoController extends Controller
     //method to create new todo record
     public function store(Request $request){
 
+        $response= null;
         $result = null;
         try{
             $todo = null;
 
             if($request->title==""){
                 $result=["responseCode"=>417, "message"=>"title can't be emtpy", "data"=> null];
+                $response = response($result, 417);
             }else if($request->description==""){
                 $result = ["responseCode" => 417, "message" => "description can't be empty", "data" => null];
+                $response = response($result, 417);
             }else if ($request->startdateTime=="" || $request->enddateTime==""){
                 $result = ["responseCode" => 417, "message" => "start datetime and end datetime cannot be empty", "data"=>null];
+                $response = response($result, 417);
             }
             else{
 
@@ -112,6 +116,7 @@ class TodoController extends Controller
 
                 if($countTodo>0){
                     $result = ["responseCode"=>417,"message"=>"title already exists", "data"=>null];
+                    $response = response($result, 417);
                 }
                 else{
                     $todo = Todo::create([
@@ -123,12 +128,15 @@ class TodoController extends Controller
 
                     ]);
                     $result = ["responseCode" => 200, "message" => "success", "data" => $todo];
+                    $response = response($result, 200);
                 }
             }
-            return response()->json($result);
+            // return response()->json($result);
+            return $response;
         }catch(Exception $exception){
             $result = ["responseCode"=> 417, "message"=> "failed", "data" => $exception->getMessage()];
-            return response()->json($result);
+            // return response()->json($result);
+            return response($result, 417 );
         }
 
     }
@@ -162,7 +170,7 @@ class TodoController extends Controller
      */
     //method to get all to dos
     public function getAllTodos(){
-        $todos = Todo::all();
+        $todos = Todo::orderBy('created_at','DESC')->get();
         $countTodos = Todo::all()->count();
 
         //throw error if it comes up
@@ -224,23 +232,31 @@ class TodoController extends Controller
         $result = null;
 
         //catch any error that comes up from this code
-        $result = null;
+        $response = null;
         try {
             // $todo = $this->todo->updateTodoStatus($id, $request->status);
             $countTodo = Todo::where('id', $request->id)->count();
             $todo = null;
             if ($countTodo > 0) {
                 $todo = Todo::where('id', $request->id)->get();
+                // $users = DB::table('users')
+                // ->join('contacts', 'users.id', '=', 'contacts.user_id')
+                // ->join('orders', 'users.id', '=', 'orders.user_id')
+                // ->select('users.*', 'contacts.phone', 'orders.price')
+                // ->get();
                 $result = ["responseCode" => 200, "message" => "success", "data" => $todo];
+                $response = response($result, 200);
             }else{
                 $result = ["responseCode" => 417, "message" => "todo details not found", "data" => null];
+                $response = response($result, 417);
             }
             // $result = ["responseCode" => 200, "msg"=>"success", "data"=>$todo];
-            return response()->json($result);
+            return $response;
         }
         catch (Exception $exception){
             $result = ["responseCode" => 417, "msg"=>$exception->getMessage(), "data"=>null];
-            return response()->json($result);
+            $response = response($result, 417);
+            return $response;
         }
     }
 
